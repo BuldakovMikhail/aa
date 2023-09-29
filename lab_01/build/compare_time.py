@@ -49,16 +49,27 @@ def print_measurement_res(
 
     print("-" * 136)
 
-    for i in range(len(sizes)):
-        print(
-            "|{:^10d}|{:^30.2e}|{:^30.2e}|{:^30.2e}|{:^30.2e}|".format(
-                sizes[i],
-                time_lev_table[i],
-                time_dam_lev_table[i],
-                time_dam_lev_recursion[i],
-                time_dam_lev_recursion_cash[i],
+    with open("dist.csv", "w") as dist:
+        for i in range(len(sizes)):
+            print(
+                "|{:^10d}|{:^30.2e}|{:^30.2e}|{:^30.2e}|{:^30.2e}|".format(
+                    sizes[i],
+                    time_lev_table[i],
+                    time_dam_lev_table[i],
+                    time_dam_lev_recursion[i],
+                    time_dam_lev_recursion_cash[i],
+                )
             )
-        )
+
+            temp = [
+                str(sizes[i]),
+                str(time_lev_table[i]),
+                str(time_dam_lev_table[i]),
+                str(time_dam_lev_recursion[i]),
+                str(time_dam_lev_recursion_cash[i]),
+            ]
+
+            dist.write(" & ".join(temp) + "//" + "\n" + "\hline" + "\n")
 
     print("-" * 136)
 
@@ -111,9 +122,9 @@ def compare_time():
         time_lev_table.append(time_analysis(levenstein, 2000, n))
         time_dam_lev_table.append(time_analysis(damerau_levenstein_iter, 2000, n))
         time_dam_lev_recursion_cash.append(
-            time_analysis(damerau_levenstein_rec_cash, 1000, n)
+            time_analysis(damerau_levenstein_rec_cash, 200, n)
         )
-        time_dam_lev_recursion.append(time_analysis(damerau_levenstein_rec, 1000, n))
+        time_dam_lev_recursion.append(time_analysis(damerau_levenstein_rec, 200, n))
 
     print_measurement_res(
         sizes,
