@@ -7,3 +7,5 @@
 *.toc
 __pycache__
 *.csv
+*.bcf
+*.xml
