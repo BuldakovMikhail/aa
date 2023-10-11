@@ -1,4 +1,4 @@
-from time import process_time_ns
+from time import process_time
 import matplotlib.pyplot as plt
 
 from algorithms import *
@@ -18,12 +18,12 @@ def generate_strings(string_length=5):
 def time_analysis(function, iterations, length):
     string_1, string_2 = generate_strings(length)
 
-    time_start = process_time_ns()
+    time_start = process_time()
 
     for _ in range(iterations):
         function(string_1, string_2)
 
-    time_stop = process_time_ns()
+    time_stop = process_time()
 
     return (time_stop - time_start) / iterations
 
@@ -119,12 +119,30 @@ def compare_time():
     sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
     for n in sizes:
-        time_lev_table.append(time_analysis(levenstein, 2000, n))
-        time_dam_lev_table.append(time_analysis(damerau_levenstein_iter, 2000, n))
+        time_lev_table.append(time_analysis(levenstein, 5000, n))
+        time_dam_lev_table.append(time_analysis(damerau_levenstein_iter, 5000, n))
         time_dam_lev_recursion_cash.append(
-            time_analysis(damerau_levenstein_rec_cash, 200, n)
+            time_analysis(damerau_levenstein_rec_cash, 5000, n)
         )
-        time_dam_lev_recursion.append(time_analysis(damerau_levenstein_rec, 200, n))
+
+        if n >= 8:
+            time_dam_lev_recursion.append(time_analysis(damerau_levenstein_rec, 100, n))
+        else:
+            time_dam_lev_recursion.append(
+                time_analysis(damerau_levenstein_rec, 10000, n)
+            )
+
+    with open("l.log", "w") as dist:
+        print(time_lev_table, file=dist)
+
+    with open("dl.log", "w") as dist:
+        print(time_dam_lev_table, file=dist)
+
+    with open("dlr.log", "w") as dist:
+        print(time_dam_lev_recursion, file=dist)
+
+    with open("dlrc.log", "w") as dist:
+        print(time_dam_lev_recursion_cash, file=dist)
 
     print_measurement_res(
         sizes,
