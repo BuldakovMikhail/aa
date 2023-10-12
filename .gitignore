@@ -5,4 +5,8 @@
 *.out
 *.gz
 *.toc
+*.xml
+*.csv
+*.pyc
+*.bcf
 
