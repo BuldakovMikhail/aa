@@ -74,11 +74,11 @@ def main():
         elif x == 1:
             s1 = input("Введите строку 1: ")
             s2 = input("Введите строку 2: ")
-            print(f"Расстояние = {levenstein(s1, s2)}")
+            print(f"Расстояние = {levenstein(s1, s2, show_matrix=True)}")
         elif x == 2:
             s1 = input("Введите строку 1: ")
             s2 = input("Введите строку 2: ")
-            print(f"Расстояние = {damerau_levenstein_iter(s1, s2)}")
+            print(f"Расстояние = {damerau_levenstein_iter(s1, s2, show_matrix=True)}")
         elif x == 3:
             s1 = input("Введите строку 1: ")
             s2 = input("Введите строку 2: ")
@@ -86,7 +86,9 @@ def main():
         elif x == 4:
             s1 = input("Введите строку 1: ")
             s2 = input("Введите строку 2: ")
-            print(f"Расстояние = {damerau_levenstein_rec_cash(s1, s2)}")
+            print(
+                f"Расстояние = {damerau_levenstein_rec_cash(s1, s2, show_matrix=True)}"
+            )
         elif x == 6:
             compare_time()
         else:
