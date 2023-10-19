@@ -51,31 +51,31 @@
 	\item Подготовительные вычисления. Сначала создаются два вспомогательных массива \eqref{eq:rf} и \eqref{eq:cf}.
 	\begin{equation}
 	\label{eq:rf}
-	\text{{rowFactor}}[i] = \sum_{j=1}^{n/2} A[i][2j-1] \cdot A[i][2j]
+	\text{{rowFactor}}[i] = \sum_{j=0}^{n/2 - 1} A[i][2j+1] \cdot A[i][2j]
 	\end{equation}
-	для \(1 \leq i \leq m\)
+	для \(0 \leq i < m\)
 	\begin{equation}
 	\label{eq:cf}
-	\text{{colFactor}}[j] = \sum_{i=1}^{n/2} B[2i-1][j] \cdot B[2i][j]
+	\text{{colFactor}}[j] = \sum_{i=0}^{n/2 - 1} B[2i+1][j] \cdot B[2i][j]
 	\end{equation}
-	для \(1 \leq j \leq p\).
+	для \( \leq j < p\).
 	
 	\item Умножение матриц. Вычисляем результирующую матрицу $C$ по формуле~\eqref{eq:c_res}.
 	\begin{equation}
 		\label{eq:c_res}
 		\begin{aligned}
-			C[i][j] &= \sum_{k=1}^{n/2} (A[i][2k-1] + B[2k][j]) \cdot (A[i][2k] + B[2k-1][j]) \\
+			C[i][j] &= \sum_{k=0}^{n/2 - 1} (A[i][2k+1] + B[2k][j]) \cdot (A[i][2k] + B[2k+1][j]) \\
 			&\quad - \text{{rowFactor}}[i] - \text{{colFactor}}[j]
 		\end{aligned}
 	\end{equation}
-	для \(1 \leq i \leq m\) и \(1 \leq j \leq p\).
+	для \(0 \leq i < m\) и \(0 \leq j < p\).
 	
 	\item Коррекция. Если \(n\) нечетно, добавляем коррекцию, в соответствии с формулой \eqref{eq:er}.
 	\begin{equation}
 		\label{eq:er}
 	C[i][j] += A[i][n] \cdot B[n][j]
 	\end{equation}
-	для \(1 \leq i \leq m\) и \(1 \leq j \leq p\). 
+	для \(0 \leq i < m\) и \(0 \leq j < p\). 
 \end{enumerate}
 
 \section{Алгоритм Штрассена}
