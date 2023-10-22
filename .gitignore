@@ -9,4 +9,5 @@
 *.csv
 *.pyc
 *.bcf
-
+.idea
+cmake-build-debug
