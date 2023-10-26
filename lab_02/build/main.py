@@ -1,4 +1,5 @@
 from algorithms import *
+from compare_time import *
 
 
 def main():
@@ -11,6 +12,8 @@ def main():
     print(vinograd(a, b))
     print(vinograd_opt(a, b))
     print(strassen(a, b))
+
+    compare_time()
 
 
 if __name__ == "__main__":
