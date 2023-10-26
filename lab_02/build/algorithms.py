@@ -2,7 +2,7 @@ import numpy as np
 
 
 def classical_mult(A, B):
-    if len(A) != len(B[0]):
+    if len(A[0]) != len(B):
         raise ValueError("Matrix shapes doesnt match")
 
     c = np.zeros((len(A), len(B[0])))
@@ -34,7 +34,7 @@ def get_col_factor(B):
 
 
 def vinograd(A, B):
-    if len(A) != len(B[0]):
+    if len(A[0]) != len(B):
         raise ValueError("Matrix shapes doesnt match")
 
     c = np.zeros((len(A), len(B[0])))
@@ -77,7 +77,7 @@ def get_col_factor_opt(B):
 
 
 def vinograd_opt(A, B):
-    if len(A) != len(B[0]):
+    if len(A[0]) != len(B):
         raise ValueError("Matrix shapes doesnt match")
 
     c = np.zeros((len(A), len(B[0])))
@@ -143,7 +143,7 @@ def is_power_of_two(n):
 
 
 def strassen(A, B):
-    if len(A) != len(B[0]):
+    if len(A[0]) != len(B):
         raise ValueError("Matrix shapes doesnt match")
 
     temp_A, temp_B = A, B
