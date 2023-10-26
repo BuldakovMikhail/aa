@@ -90,9 +90,8 @@ def vinograd_opt(A, B):
         for j in range(len(B[0])):
             buff = -row_factor[i] - col_factor[j]
             for k in temp:
-                buff += (A[i][k << 1] + B[(k << 1) + 1][j]) * (
-                    A[i][(k << 1) + 1] + B[(k << 1)][j]
-                )
+                ks = k << 1
+                buff += (A[i][ks] + B[ks + 1][j]) * (A[i][ks + 1] + B[ks][j])
             c[i][j] = buff
 
     if len(B) % 2 == 1:
@@ -103,24 +102,6 @@ def vinograd_opt(A, B):
 
 
 def pad_to_power_of_two(A, B):
-    # n1, m1 = len(A), len(A[0])
-    # n2, m2 = len(B), len(B[0])
-
-    # n = max(max(m1, m2), max(n1, n2))
-
-    # new_A = [[0] * n for _ in range(n)]
-    # new_B = [[0] * n for _ in range(n)]
-
-    # for i in range(n1):
-    #     for j in range(m1):
-    #         new_A[i][j] = A[i][j]
-
-    # for i in range(n2):
-    #     for j in range(m2):
-    #         new_B[i][j] = B[i][j]
-
-    # return new_A, new_B
-
     n1, m1 = A.shape
     n2, m2 = B.shape
 
