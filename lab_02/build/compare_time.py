@@ -88,16 +88,16 @@ def build_graph(
         label="Алгоритм Винограда с оптимизацией",
         marker="v",
     )
-    plot.plot(
-        sizes,
-        time_strassen,
-        label="Алгоритм Штрассена",
-        marker="D",
-    )
+    # plot.plot(
+    #     sizes,
+    #     time_strassen,
+    #     label="Алгоритм Штрассена",
+    #     marker="D",
+    # )
 
     plt.legend()
     plt.grid()
-    plt.title("Сравнение алгоритмом по времени")
+    plt.title("Сравнение реализаций алгоритмов по времени выполнения")
     plt.ylabel("Затраченное время (с)")
     plt.xlabel("Порядок матриц")
     plt.yscale("log")
@@ -111,15 +111,15 @@ def compare_time():
     time_strassen = []
     time_vinograd_opt = []
 
-    sizes = list(range(1, 52, 5))
+    sizes = list(range(6, 53, 4))
 
     for n in sizes:
         print("n= ", n)
 
-        time_classic.append(time_analysis(classical_mult, 1000, n))
-        time_vinograd.append(time_analysis(vinograd, 1000, n))
-        time_strassen.append(time_analysis(strassen, 1000, n))
-        time_vinograd_opt.append(time_analysis(vinograd_opt, 1000, n))
+        time_classic.append(time_analysis(classical_mult, 500, n))
+        time_vinograd.append(time_analysis(vinograd, 500, n))
+        # time_strassen.append(time_analysis(strassen, 500, n))
+        time_vinograd_opt.append(time_analysis(vinograd_opt, 500, n))
 
     with open("classic.log", "w") as dist:
         print(time_classic, file=dist)
@@ -130,16 +130,16 @@ def compare_time():
     with open("vinograd_opt.log", "w") as dist:
         print(time_vinograd_opt, file=dist)
 
-    with open("strassen.log", "w") as dist:
-        print(time_strassen, file=dist)
+    # with open("strassen.log", "w") as dist:
+    #     print(time_strassen, file=dist)
 
-    print_measurement_res(
-        sizes,
-        time_classic,
-        time_vinograd,
-        time_vinograd_opt,
-        time_strassen,
-    )
+    # print_measurement_res(
+    #     sizes,
+    #     time_classic,
+    #     time_vinograd,
+    #     time_vinograd_opt,
+    #     time_strassen,
+    # )
 
     build_graph(
         sizes,

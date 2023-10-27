@@ -20,7 +20,7 @@ def show_menu():
 def input_matrices():
     n, m = list(map(int, input("Введите n, m матрицы A через пробел: ").split()))
 
-    A = np.zeros(n, m)
+    A = np.zeros((n, m))
     print("Введите матрицу: ")
     for i in range(n):
         row = list(map(float, input(f"Строка {i + 1}: ").split()))
@@ -31,7 +31,7 @@ def input_matrices():
 
     n, m = list(map(int, input("Введите n, m матрицы B через пробел: ").split()))
 
-    B = np.zeros(n, m)
+    B = np.zeros((n, m))
     print("Введите матрицу: ")
     for i in range(n):
         row = list(map(float, input(f"Строка {i + 1}: ").split()))
