@@ -1,0 +1,13 @@
+*.aux
+*.bbl
+*.log
+*.blg
+*.out
+*.gz
+*.toc
+*.xml
+*.csv
+*.pyc
+*.bcf
+.idea
+cmake-build-debug
