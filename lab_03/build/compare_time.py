@@ -22,7 +22,7 @@ def generate_arr_sorted(n=5):
 
 
 def time_analysis(function, iterations, length):
-    m_1 = generate_arr(length)
+    m_1 = generate_arr_sorted(length)
 
     time_start = process_time()
 
@@ -65,13 +65,13 @@ def print_measurement_res(
             )
 
             temp = [
-                str(sizes[i]),
-                str(time_shell[i]),
-                str(time_gnome[i]),
-                str(time_heap[i]),
+                "{:d}".format(sizes[i]),
+                "{:.3e}".format(time_shell[i]),
+                "{:.3e}".format(time_gnome[i]),
+                "{:.3e}".format(time_heap[i]),
             ]
 
-            dist.write(" & ".join(temp) + "\\" + "\n" + "\hline" + "\n")
+            dist.write(" $&$ ".join(temp) + r"$\\" + "\n" + "\hline" + "\n")
 
     print("-" * 136)
 
@@ -85,7 +85,7 @@ def build_graph(
     fig1 = plt.figure(figsize=(10, 7))
     plot = fig1.add_subplot()
     plot.plot(sizes, time_shell, label="Сортировка Шелла", marker=">")
-    plot.plot(sizes, time_gnome, label="Гномья сортирова", marker="+")
+    plot.plot(sizes, time_gnome, label="Гномья сортировка", marker="+")
     plot.plot(
         sizes,
         time_heap,
@@ -113,9 +113,9 @@ def compare_time():
     for n in sizes:
         print("n= ", n)
 
-        time_shell.append(time_analysis(shell_sort, 500, n))
-        time_gnome.append(time_analysis(gnome_sort, 500, n))
-        time_heap.append(time_analysis(heap_sort, 500, n))
+        time_shell.append(time_analysis(shell_sort, 1000, n))
+        time_gnome.append(time_analysis(gnome_sort, 1000, n))
+        time_heap.append(time_analysis(heap_sort, 1000, n))
 
     with open("shell.log", "w") as dist:
         print(time_shell, file=dist)
