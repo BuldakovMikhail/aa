@@ -22,7 +22,7 @@ def generate_arr_sorted(n=5):
 
 
 def time_analysis(function, iterations, length):
-    m_1 = generate_arr_sorted(length)
+    m_1 = generate_arr(length)
 
     time_start = process_time()
 
@@ -108,14 +108,14 @@ def compare_time():
     time_gnome = []
     time_heap = []
 
-    sizes = list(range(1000, 10000, 1000))
+    sizes = list(range(1000, 100000, 10000))
 
     for n in sizes:
         print("n= ", n)
 
-        time_shell.append(time_analysis(shell_sort, 1000, n))
-        time_gnome.append(time_analysis(gnome_sort, 1000, n))
-        time_heap.append(time_analysis(heap_sort, 1000, n))
+        time_shell.append(time_analysis(shell_sort, 250, n))
+        time_gnome.append(time_analysis(gnome_sort, 250, n))
+        time_heap.append(time_analysis(heap_sort, 250, n))
 
     with open("shell.log", "w") as dist:
         print(time_shell, file=dist)
