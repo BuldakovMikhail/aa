@@ -98,28 +98,16 @@
 
 \subsection{Трудоемкость алгоритма Шелла}
 
-При расчете трудоемкости считается, что $\lfloor \log_{2}N \rfloor \approx \log_{2}N $, тогда трудоемкость алгоритма Шелла оценивается по формуле \eqref{eq:shell_main}.
-\begin{equation}
-	\label{eq:shell_main}
-	\begin{gathered}
-		f = 4 + A (5 + B(10 + \begin{cases}
-			0, & \text{л.~c.}\\
-			16 C, & \text{х.~c.}
-		\end{cases}))
-	\end{gathered},
-\end{equation}
-
-где $ A = \log_{2}N $, $AB = \sum_{i=1}^{\log_{2}N}(N - \frac{N}{2^i}) = N \log_{2}N - N + 1$, $ABC = \sum_{i=1}^{\log_{2}N} \frac{(2^i-1)2^i}{2} = \frac{1}{3}(2N^2-3N+1)$.
-
-В лучшем случае, когда массив отсортирован трудоемкость рассчитывается по формуле \eqref{eq:shell_best}.
+При расчете трудоемкости считается, что $\lfloor \log_{2}N \rfloor \approx \log_{2}N $.
+В лучшем случае, когда массив отсортирован трудоемкость алгоритма Шелла рассчитывается по формуле \eqref{eq:shell_best}.
 \begin{equation}
 	\label{eq:shell_best}
 	\begin{gathered}
 		f_{best} = 10 N \log_{2}N - 10 N + 5 \log_{2}N + 14 \approx O(N\log_{2}N)
 	\end{gathered}
 \end{equation}
-
-В худшем случае, когда переставляются элементы во всех итерациях~\eqref{eq:shell_worst}.
+ 
+В худшем случае, когда переставляются элементы во всех итерациях, трудоемкость алгоритма Шелла рассчитывается по формуле \eqref{eq:shell_worst}.
 \begin{equation}
 	\label{eq:shell_worst}
 	\begin{gathered}
