@@ -104,7 +104,7 @@ def choose_place(pk):
     return chosen_place
 
 
-def ants(matrix, alpha, beta, k_evaporation, days, start_city):
+def ants(matrix, start_city, alpha=0.5, beta=0.5, k_evaporation=0.5, days=10):
     places = len(matrix)
 
     q = get_q(matrix)
@@ -141,6 +141,7 @@ def ants(matrix, alpha, beta, k_evaporation, days, start_city):
     return min_dist, best_way
 
 
-print(brut(test, 0))
+if __name__ == "__main__":
+    print(brut(test, 0))
 
-print(ants(test, 0.5, 0.5, 2, 100, 0))
+    print(ants(test, 0.5, 0.5, 0.5, 10, 0))
