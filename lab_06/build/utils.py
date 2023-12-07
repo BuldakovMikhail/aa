@@ -25,7 +25,7 @@ def matrix_input():
 
 
 def generate_graph(size):
-    a = np.random.randint(100, 10000, size=(size, size))
+    a = np.random.randint(1, 100, size=(size, size))
     # b = np.random.randint(0, 2, size=(size, size))
     c = 1 - np.eye(size)
 
