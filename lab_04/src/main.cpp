@@ -19,6 +19,13 @@ int main() {
     for (int i = 0; i < preds.size(); ++i)
         std::wcout << preds[i] << std::endl;
 
+    std::wcout << L"Parr" << std::endl;
+    preds = get_closest_words_mt(arr, L"mamx", 2, 2, 5);
+
+    for (int i = 0; i < preds.size(); ++i)
+        std::wcout << preds[i] << std::endl;
+
+
 
 /*
     std::string data = "Abc";
