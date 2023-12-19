@@ -8,14 +8,14 @@
 #include <fstream>
 #include <algorithm>
 
-std::vector<std::string> read_words_from_file(const std::string &fname){
-    std::ifstream file(fname.c_str());
+std::vector<std::wstring> read_words_from_file(const std::string &fname){
+    std::wifstream  file(fname.c_str());
 
     if (!file.is_open())
         return {};
 
-    std::string temp;
-    std::vector<std::string> res;
+    std::wstring temp;
+    std::vector<std::wstring> res;
 
     for(file >> temp; !file.eof(); file >> temp) {
         std::transform(temp.begin(), temp.end(), temp.begin(),

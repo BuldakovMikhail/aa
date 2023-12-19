@@ -11,16 +11,16 @@
 #include "levenstein.h"
 
 
-bool is_word_in_vec(const std::vector<std::string> &words, const std::string &word){
+bool is_word_in_vec(const std::vector<std::wstring> &words, const std::wstring &word){
     return std::binary_search(words.begin(), words.end(), word);
 }
 
-std::vector<std::string> get_closest_words(const std::vector<std::string> &words,
-                                           const std::string &word,
-                                           size_t k,
-                                           size_t max_errors){
+std::vector<std::wstring> get_closest_words(const std::vector<std::wstring> &words,
+                                            const std::wstring &word,
+                                            size_t k,
+                                            size_t max_errors){
 
-    std::vector<std::string> temp;
+    std::vector<std::wstring> temp;
     size_t min = word.size();
 
     size_t errors = std::min(static_cast<size_t>(std::ceil(0.3 * word.size())), max_errors);

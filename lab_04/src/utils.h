@@ -8,6 +8,6 @@
 #include <string>
 #include <vector>
 
-std::vector<std::string> read_words_from_file(const std::string &fname);
+std::vector<std::wstring> read_words_from_file(const std::string &fname);
 
 #endif //SRC_UTILS_H

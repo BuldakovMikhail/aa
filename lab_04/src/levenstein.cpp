@@ -5,7 +5,7 @@
 #include "levenstein.h"
 #include "allocate.h"
 
-int lev_mtr(const std::string &str1, const std::string &str2)
+int lev_mtr(const std::wstring &str1, const std::wstring &str2)
 {
     size_t n = str1.length();
     size_t m = str2.length();

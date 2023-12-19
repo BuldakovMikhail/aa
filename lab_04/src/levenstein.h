@@ -8,6 +8,6 @@
 
 #include <string>
 
-int lev_mtr(const std::string &str1, const std::string &str2);
+int lev_mtr(const std::wstring &str1, const std::wstring &str2);
 
 #endif //SRC_LEVENSTEIN_H
