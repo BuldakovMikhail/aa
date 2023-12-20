@@ -13,12 +13,12 @@ std::vector<std::wstring> get_closest_words(const std::vector<std::wstring> &wor
 
     for (const auto &cur_word: words){
         int dist = lev_mtr(cur_word, word);
-        if (dist < min && dist < errors){
+        if (dist < min && dist <= errors){
             temp.clear();
             temp.push_back(cur_word);
             min = dist;
         }
-        else if (dist == min && temp.size() < k)
+        else if (dist == min && dist <= errors && temp.size() < k)
             temp.push_back(cur_word);
     }
 

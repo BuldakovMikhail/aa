@@ -23,6 +23,9 @@ std::vector<std::wstring> get_closest_words_mt(const std::vector<std::wstring> &
                                      k,std::ref(min),
                                      std::ref(collector));
             ++l;
+
+            if (l >= words.size())
+                break;
         }
 
         for (size_t i = 0; i < num_threads; ++i) {

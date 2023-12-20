@@ -10,4 +10,6 @@
 
 std::vector<std::wstring> read_words_from_file(const std::string &fname);
 
+void print_arr(const std::vector<std::wstring> &arr, bool is_capital);
+
 #endif //SRC_UTILS_H

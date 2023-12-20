@@ -10,12 +10,12 @@ void compute_distance(const std::wstring &word_cor,
     int dist = lev_mtr(word_cor, word_er);
 
     mutex.lock();
-    if (dist < min && dist < errors){
+    if (dist < min && dist <= errors){
         collector.clear();
         collector.push_back(word_cor);
         min = dist;
     }
-    else if (dist == min && collector.size() < k)
+    else if (dist == min && dist <= errors && collector.size() < k)
         collector.push_back(word_cor);
     mutex.unlock();
 }

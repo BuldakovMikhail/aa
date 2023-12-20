@@ -34,11 +34,11 @@ std::vector<std::wstring> get_closest_words(const std::vector<std::wstring> &wor
 
     for (const auto &cur_word: words) {
         int dist = lev_mtr(cur_word, word);
-        if (dist < min && dist < errors) {
+        if (dist < min && dist <= errors) {
             temp.clear();
             temp.push_back(cur_word);
             min = dist;
-        } else if (dist == min && temp.size() < k)
+        } else if (dist == min && dist <= errors && temp.size() < k)
             temp.push_back(cur_word);
     }
 
@@ -56,11 +56,11 @@ void compute_distance(const std::wstring &word_cor,
     int dist = lev_mtr(word_cor, word_er);
 
     mutex.lock();
-    if (dist < min && dist < errors) {
+    if (dist < min && dist <= errors) {
         collector.clear();
         collector.push_back(word_cor);
         min = dist;
-    } else if (dist == min && collector.size() < k)
+    } else if (dist == min && dist <= errors && collector.size() < k)
         collector.push_back(word_cor);
     mutex.unlock();
 }
@@ -90,6 +90,9 @@ std::vector<std::wstring> get_closest_words_mt(const std::vector<std::wstring> &
                                      k, std::ref(min),
                                      std::ref(collector));
             ++l;
+
+            if (l >= words.size())
+                break;
         }
 
         for (size_t i = 0; i < num_threads; ++i) {
