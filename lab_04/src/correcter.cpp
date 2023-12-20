@@ -10,6 +10,7 @@
 #include <thread>
 #include <mutex>
 
+#include "correcter.h"
 #include "levenstein.h"
 
 

@@ -2,6 +2,8 @@
 #include "levenstein.h"
 #include "correcter.h"
 #include "utils.h"
+#include "measure_time.h"
+
 #include <algorithm>
 
 int main() {
@@ -10,7 +12,7 @@ int main() {
 
     std::cout << lev_mtr("aboba", "boba") << std::endl;
 */
-    auto arr = read_words_from_file("../data/data.txt");
+    /*auto arr = read_words_from_file("../data/data.txt");
     std::cout << is_word_in_vec(arr, L"mama") << std::endl;
     std::cout << is_word_in_vec(arr, L"mamx") << std::endl;
 
@@ -23,7 +25,7 @@ int main() {
     preds = get_closest_words_mt(arr, L"mamx", 2, 2, 5);
 
     for (int i = 0; i < preds.size(); ++i)
-        std::wcout << preds[i] << std::endl;
+        std::wcout << preds[i] << std::endl;*/
 
 
 
@@ -32,5 +34,8 @@ int main() {
     std::transform(data.begin(), data.end(), data.begin(),
                    [](unsigned char c){ return std::tolower(c); });
     */
+
+/*    measure_time_with_threads(1, 15, 1);*/
+
     return 0;
 }
