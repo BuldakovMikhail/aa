@@ -90,7 +90,8 @@ std::vector<std::wstring> get_closest_words_mt(const std::vector<std::wstring> &
                                      k, std::ref(min),
                                      std::ref(collector));
             ++l;
-
+            // TODO: Bug, когда делаем брейк при этом не заполнили массив тредс полностью
+            
             if (l >= words.size())
                 break;
         }

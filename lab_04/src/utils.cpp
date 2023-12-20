@@ -18,8 +18,8 @@ std::vector<std::wstring> read_words_from_file(const std::string &fname) {
     std::vector<std::wstring> res;
 
     for (file >> temp; !file.eof(); file >> temp) {
-        std::transform(temp.begin(), temp.end(), temp.begin(),
-                       [](unsigned char c) { return std::tolower(c); });
+        /*std::transform(temp.begin(), temp.end(), temp.begin(),
+                       [](unsigned char c) { return std::tolower(c); });*/
         res.push_back(temp);
     }
 

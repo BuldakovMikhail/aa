@@ -86,6 +86,8 @@ int main() {
             std::cout << "Результат: " << std::endl;
             print_arr(res, is_capital);
         } else if (opt == 4) { ;
+        } else if (opt == 5) {
+            measure_time_with_threads(1, 15, 1);
         } else { ;
             break;
         }
