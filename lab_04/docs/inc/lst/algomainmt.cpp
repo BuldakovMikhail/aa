@@ -1,6 +1,6 @@
 std::vector<std::string> get_closest_words_mt(
     const std::vector<std::string> &words, const std::string &word,
-    size_t k, size_t max_errors, size_t num_threads)
+    size_t k, size_t max_errors, size_t num_threads )
 {
     if (is_word_in_vec(words, word))
         return {word};
@@ -10,21 +10,19 @@ std::vector<std::string> get_closest_words_mt(
     std::vector<std::string> collector;
     std::thread threads[num_threads];
 
-    size_t l = 0;
-    size_t created_threads = 0;
-
-    while (l < words.size()) {
-        created_threads = 0;
-        for (size_t i = 0; i < num_threads; ++i) {
+    size_t range_step = words.size() / num_threads;
+    
+    for (size_t i = 0; i < num_threads; ++i) {
+        if (i != num_threads - 1) {
             threads[i] = std::thread(compute_distance,
-                words[l], word, errors, k, std::ref(min), std::ref(collector));
-            ++l;
-            ++created_threads;
-            if (l >= words.size())
-                break;
-        }
-        for (size_t i = 0; i < created_threads; ++i)
-            threads[i].join();
+                words, word, errors, k, range_step * i,
+                range_step * (i + 1), std::ref(min), std::ref(collector));
+        } else
+            threads[i] = std::thread(compute_distance,
+                words, word, errors, k, range_step * i,
+                words.size(), std::ref(min), std::ref(collector));
     }
+    for (size_t i = 0; i < num_threads; ++i)
+        threads[i].join();
     return collector;
 }

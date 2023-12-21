@@ -71,4 +71,15 @@ void measure_time_with_threads(size_t thread_start, size_t thread_stop, size_t f
         dist << res_time << std::endl;
         printf("|%20zu|%14.3lf|\n", tc, res_time);
     }
+
+    std::ofstream dist2("../measure_one_thread.log");
+
+    auto start = std::clock();
+    for (int i = 0; i < tries; ++i)
+        get_closest_words(arr, "bbbbb", 5, 3);
+    auto stop = std::clock();
+
+    double res_time = (double) (stop - start) / (CLOCKS_PER_SEC) / tries * 1e3;
+    dist2 << res_time << std::endl;
+    std::cout << res_time << std::endl;
 }
