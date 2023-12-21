@@ -1,11 +1,11 @@
 std::mutex mutex;
 
-void compute_distance(const std::wstring &word_cor,
-                      const std::wstring &word_er,
+void compute_distance(const std::string &word_cor,
+                      const std::string &word_er,
                       size_t errors,
                       size_t k,
                       size_t &min,
-                      std::vector<std::wstring> &collector)
+                      std::vector<std::string> &collector)
 {
     int dist = lev_mtr(word_cor, word_er);
 
