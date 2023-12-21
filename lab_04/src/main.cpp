@@ -19,14 +19,39 @@ void show_menu() {
     std::cout << "Выберите пункт меню: ";
 }
 
+void func_test(const std::vector<std::string> &words, const std::string &word, bool is_capital) {
+    std::cout << "---------------------------" << std::endl;
+    std::cout << "Слово: " << word << std::endl;
+    std::cout << "Результат (без потоков): " << std::endl;
+    auto res = get_closest_words(words, word, 3, 2);
+    print_arr(res, is_capital);
+
+    std::cout << "Результат (c потоками): " << std::endl;
+    res = get_closest_words_mt(words, word, 3, 2, 2);
+    print_arr(res, is_capital);
+    std::cout << "---------------------------" << std::endl;
+}
+
+void run_tests() {
+    std::vector<std::string> ftest_words = {"mama", "myla", "ramu"};
+    func_test(ftest_words, "mama", true);
+    func_test(ftest_words, "mamy", false);
+    func_test(ftest_words, "myma", false);
+    func_test(ftest_words, "ahtung", false);
+    func_test({}, "ahtung", false);
+    func_test({}, "", false);
+    func_test(ftest_words, "", false);
+}
+
+
 int main() {
     setlocale(LC_ALL, "");
     int opt;
-    std::vector<std::wstring> words;
+    std::vector<std::string> words;
 
     while (true) {
         show_menu();
-        std::wcin >> opt;
+        std::cin >> opt;
 
         if (opt == 0)
             break;
@@ -34,17 +59,18 @@ int main() {
             words = read_words_from_file("../data/data.txt");
             if (words.empty())
                 std::cout << "Ничего не прочитали" << std::endl;
-
-            print_arr(words, false);
+            else
+                std::cout << "Корпус считан" << std::endl;
+            /*print_arr(words, false);*/
         } else if (opt == 2) {
-            std::wstring word;
+            std::string word;
             int max_errors;
             int k;
 
             bool is_capital = false;
 
             std::cout << "Введите слово: ";
-            std::wcin >> word;
+            std::cin >> word;
 
             if (std::isupper(word[0]))
                 is_capital = true;
@@ -52,18 +78,22 @@ int main() {
                            [](unsigned char c) { return std::tolower(c); });
 
             std::cout << "Максимальное число ошибок: ";
-            std::wcin >> max_errors;
+            std::cin >> max_errors;
 
             std::cout << "Сколько слов вывести: ";
-            std::wcin >> k;
+            std::cin >> k;
 
 
             auto res = get_closest_words(words, word, k, max_errors);
-            std::cout << "Результат: " << std::endl;
-            print_arr(res, is_capital);
+            if (res.empty()) {
+                std::cout << "Слова не найдены " << std::endl;
+            } else {
+                std::cout << "Результат: " << std::endl;
+                print_arr(res, is_capital);
+            }
 
         } else if (opt == 3) {
-            std::wstring word;
+            std::string word;
             int max_errors;
             int k;
             int num_threads;
@@ -71,21 +101,26 @@ int main() {
             bool is_capital = false;
 
             std::cout << "Введите слово: ";
-            std::wcin >> word;
+            std::cin >> word;
 
             std::cout << "Максимальное число ошибок: ";
-            std::wcin >> max_errors;
+            std::cin >> max_errors;
 
             std::cout << "Сколько слов вывести: ";
-            std::wcin >> k;
+            std::cin >> k;
 
             std::cout << "Количество потоков: ";
-            std::wcin >> num_threads;
+            std::cin >> num_threads;
 
             auto res = get_closest_words_mt(words, word, k, max_errors, num_threads);
-            std::cout << "Результат: " << std::endl;
-            print_arr(res, is_capital);
-        } else if (opt == 4) { ;
+            if (res.empty()) {
+                std::cout << "Слова не найдены " << std::endl;
+            } else {
+                std::cout << "Результат: " << std::endl;
+                print_arr(res, is_capital);
+            }
+        } else if (opt == 4) {
+            run_tests();
         } else if (opt == 5) {
             measure_time_with_threads(1, 15, 1);
         } else { ;
