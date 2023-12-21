@@ -22,7 +22,7 @@ std::vector<std::string> generate_array(size_t len, size_t word_size) {
 }
 
 void measure_linear(size_t start, size_t stop, size_t step) {
-    size_t tries = 10;
+    size_t tries = 200;
 
     std::ofstream dist("../measure_linear.log");
 
@@ -41,7 +41,7 @@ void measure_linear(size_t start, size_t stop, size_t step) {
 
         start = std::clock();
         for (int i = 0; i < tries; ++i)
-            get_closest_words_mt(arr, "bbbbb", 5, 3, 6);
+            get_closest_words_mt(arr, "bbbbb", 5, 3, 1);
         stop = std::clock();
 
         double res_time_with_mt = (double) (stop - start) / (CLOCKS_PER_SEC) / tries * 1e3;
@@ -54,7 +54,7 @@ void measure_linear(size_t start, size_t stop, size_t step) {
 
 void measure_time_with_threads(size_t thread_start, size_t thread_stop, size_t factor) {
 
-    size_t tries = 10;
+    size_t tries = 200;
     auto arr = generate_array(10000, 10);
 
     std::ofstream dist("../measure_thread.log");

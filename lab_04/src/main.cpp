@@ -123,7 +123,7 @@ int main() {
             run_tests();
         } else if (opt == 5) {
             /*measure_time_with_threads(1, 15, 1);*/
-            measure_time_with_threads(1, 97, 6);
+            measure_time_with_threads(1, 50, 2);
 
             measure_linear(1000, 11000, 1000);
         } else { ;
