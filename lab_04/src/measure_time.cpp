@@ -27,7 +27,7 @@ void measure_time_with_threads(size_t thread_start, size_t thread_stop, size_t t
     size_t tries = 10;
     auto arr = generate_array(10000, 10);
 
-    std::ofstream dist("test.txt");
+    std::ofstream dist("../test.log");
 
     for (size_t tc = thread_start; tc < thread_stop; tc += thread_step) {
         auto start = std::clock();
@@ -36,5 +36,6 @@ void measure_time_with_threads(size_t thread_start, size_t thread_stop, size_t t
         auto stop = std::clock();
 
         dist << (double) (stop - start) / (CLOCKS_PER_SEC) / tries * 1e3 << std::endl;
+        std::cout << tc << std::endl;
     }
 }

@@ -81,7 +81,10 @@ std::vector<std::wstring> get_closest_words_mt(const std::vector<std::wstring> &
     std::thread threads[num_threads];
 
     size_t l = 0;
+    size_t created_threads = 0;
+
     while (l < words.size()) {
+        created_threads = 0;
         for (size_t i = 0; i < num_threads; ++i) {
             threads[i] = std::thread(compute_distance,
                                      words[l],
@@ -90,13 +93,12 @@ std::vector<std::wstring> get_closest_words_mt(const std::vector<std::wstring> &
                                      k, std::ref(min),
                                      std::ref(collector));
             ++l;
-            // TODO: Bug, когда делаем брейк при этом не заполнили массив тредс полностью
-            
+            ++created_threads;
             if (l >= words.size())
                 break;
         }
 
-        for (size_t i = 0; i < num_threads; ++i) {
+        for (size_t i = 0; i < created_threads; ++i) {
             threads[i].join();
         }
     }
