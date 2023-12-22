@@ -24,10 +24,6 @@ std::pair<std::vector<std::wstring>, size_t> get_closest_words(const std::vector
                                                                size_t k,
                                                                size_t max_errors) {
 
-    if (is_word_in_vec(words, word))
-        return {{word}, 0};
-
-
     std::vector<std::wstring> temp;
     size_t min = word.size();
 
@@ -73,6 +69,9 @@ std::vector<std::wstring> get_closest_words_with_segmented(std::map<wchar_t, std
                                                            size_t k,
                                                            size_t max_errors){
 
+    if (is_word_in_vec(words[word[0]], word))
+        return {word};
+
     auto res = get_closest_words(words[word[0]], word, k, max_errors);
 
     std::vector<std::wstring> ans = res.first;
@@ -117,10 +116,6 @@ std::pair<std::vector<std::wstring>, size_t> get_closest_words_mt(const std::vec
                                                                   size_t k,
                                                                   size_t max_errors,
                                                                   size_t num_threads) {
-
-    if (is_word_in_vec(words, word))
-        return {{word}, 0};
-
 
     size_t min = word.size();
     size_t errors = std::min(static_cast<size_t>(std::ceil(0.3 * word.size())), max_errors);
@@ -181,6 +176,9 @@ std::vector<std::wstring> get_closest_words_with_segmented_mt(std::map<wchar_t, 
                                                            size_t k,
                                                            size_t max_errors,
                                                            size_t num_threads){
+
+    if (is_word_in_vec(words[word[0]], word))
+        return {word};
 
     auto res = get_closest_words_mt(words[word[0]], word, k, max_errors, num_threads);
 
