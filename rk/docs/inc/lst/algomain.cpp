@@ -1,13 +1,8 @@
-std::vector<std::string> get_closest_words(const std::vector<std::string> &words,
-                                           const std::string &word,
-                                           size_t k,
-                                           size_t max_errors) {
+std::pair<std::vector<std::wstring>, size_t> get_closest_words(
+    const std::vector<std::wstring> &words, const std::wstring &word,
+    size_t k, size_t max_errors) {
 
-    if (is_word_in_vec(words, word))
-        return {word};
-
-
-    std::vector<std::string> temp;
+    std::vector<std::wstring> temp;
     size_t min = word.size();
 
     size_t errors = std::min(static_cast<size_t>(std::ceil(0.3 * word.size())), max_errors);
@@ -22,5 +17,5 @@ std::vector<std::string> get_closest_words(const std::vector<std::string> &words
             temp.push_back(cur_word);
     }
 
-    return temp;
+    return {temp, min};
 }
