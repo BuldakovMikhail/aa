@@ -97,7 +97,7 @@ def build_graph(sizes, time_kmp, time_st):
     plt.grid()
     plt.title("Сравнение реализаций алгоритмов по времени выполнения")
     plt.ylabel("Затраченное время (с)")
-    plt.xlabel("Размер строк")
+    plt.xlabel("Длина строки")
     # plt.yscale("log")
 
     plt.show()
@@ -113,8 +113,8 @@ def compare_time():
     # for n in sizes:
     #     print("n= ", n)
 
-    #     time_kmp.append(time_analysis_best(KMP, 500000, n))
-    #     time_st.append(time_analysis_best(standard_search, 500000, n))
+    #     time_kmp.append(time_analysis_best(KMP, 1000000, n))
+    #     time_st.append(time_analysis_best(standard_search, 1000000, n))
 
     # with open("kmp_best.log", "w") as dist:
     #     print(time_kmp, file=dist)

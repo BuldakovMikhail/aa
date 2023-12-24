@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
 
 
 def twink_standard_search(s, substr):
@@ -46,7 +48,14 @@ def twink_KMP(s, substr):
 
 
 def place_in_position(len_str, substr, position):
-    return "а" * position + substr + "а" * (len_str - position)
+    res = None
+
+    if position >= 0:
+        res = "а" * position + substr + "а" * (len_str - position)
+    else:
+        res = "а" * (len_str + len(substr))
+
+    return res
 
 
 def generate_best(len_str, substr):
@@ -122,7 +131,7 @@ def count_compares():
 def count_compares_on_same_length():
     str_len = 256
 
-    poss = list(range(0, 257, 8))
+    poss = [-1] + list(range(0, 257, 8))
     substr = "аааааффффф"
 
     comp_kmp = []
@@ -133,23 +142,63 @@ def count_compares_on_same_length():
         comp_kmp.append(twink_KMP(st, substr))
         comp_st.append(twink_standard_search(st, substr))
 
-    fig1 = plt.figure(figsize=(14, 8))
-    ax1 = fig1.add_subplot()
-    ax1.set_title("Количество сравнений для алгоритма Кнута---Морисса---Пратта")
-    ax1.set_xlabel("Индекс подстроки")
-    ax1.set_ylabel("Количество сравнений")
-    ax1.bar(poss, comp_kmp, width=6, label="Алгоритм Кнута---Морриса---Пратта")
-    ax1.legend()
+    data = {
+        "ind": poss,
+        "standard_cnt": comp_st,
+        "kmp_cnt": comp_kmp,
+    }
+    df = pd.DataFrame(data)
 
-    fig6 = plt.figure(figsize=(14, 8))
-    ax6 = fig6.add_subplot()
-    ax6.set_title("Количество сравнений для стандартного алгоритма")
-    ax6.set_xlabel("Индекс подстроки")
-    ax6.set_ylabel("Количество сравнений")
-    ax6.bar(poss, comp_st, width=6, label="Стандартный алгоритм")
-    ax6.legend()
+    sorted_by_st = df.sort_values("standard_cnt")
+    b = sorted_by_st.plot(
+        x="ind",
+        y="standard_cnt",
+        kind="bar",
+        color="lightgreen",
+        label="Стандартный алгоритм",
+        width=0.8,
+        figsize=(12, 6),
+    )
+
+    b.set_title("Количество сравнений для стандартного алгоритма")
+    b.set_xlabel("Индекс подстроки")
+    b.set_ylabel("Количество сравнений")
+    b.get_figure().set_tight_layout(True)
+
+    sorted_by_kmp = df.sort_values("kmp_cnt")
+    c = sorted_by_kmp.plot(
+        x="ind",
+        y="kmp_cnt",
+        kind="bar",
+        color="lightblue",
+        label="Алгоритм Кнута---Морриса---Пратта",
+        width=0.8,
+        figsize=(12, 6),
+    )
+
+    c.set_title("Количество сравнений для алгоритма Кнута---Морисса---Пратта")
+    c.set_xlabel("Индекс подстроки")
+    c.set_ylabel("Количество сравнений")
+    c.get_figure().set_tight_layout(True)
 
     plt.show()
+    # fig1 = plt.figure(figsize=(14, 8))
+    # ax1 = fig1.add_subplot()
+    # ax1.set_title("Количество сравнений для алгоритма Кнута---Морисса---Пратта")
+    # ax1.set_xlabel("Индекс подстроки")
+    # ax1.set_ylabel("Количество сравнений")
+    # ax1.bar(poss, comp_kmp, width=6, label="Алгоритм Кнута---Морриса---Пратта")
+    # ax1.legend()
+
+    # fig6 = plt.figure(figsize=(14, 8))
+    # ax6 = fig6.add_subplot()
+    # ax6.set_title("Количество сравнений для стандартного алгоритма")
+    # ax6.set_xlabel("Индекс подстроки")
+    # ax6.set_ylabel("Количество сравнений")
+    # ax6.bar(poss, comp_st, width=6, label="Стандартный алгоритм")
+    # ax6.legend()
+
+    # plt.show()
 
 
 if __name__ == "__main__":

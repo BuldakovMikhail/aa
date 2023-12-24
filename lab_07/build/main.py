@@ -1,5 +1,6 @@
 from algorithms import *
 from count_compares import count_compares
+from compare_time import compare_time
 
 
 def run_test(s, substr):
@@ -19,6 +20,7 @@ def show_menu():
     2 - Найти подстроку в строке (алгоритм КМП)
     3 - Функциональные тесты
     4 - Замеры количества сравнений
+    5 - Замеры времени
     0 - Выход
           """
     )
@@ -56,6 +58,10 @@ def main():
             func_tests()
         elif m == 4:
             count_compares()
+        elif m == 5:
+            compare_time()
+        else:
+            print("Неправильный пункт")
 
 
 if __name__ == "__main__":
