@@ -114,6 +114,10 @@ void device3(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::st
     }
 }
 
+void generator(AtomicQueue<Request> &q, size_t count, const std::vector<std::wstring> &words) {
+    ;;;;
+}
+
 
 void run_pipeline(AtomicQueue<Request> &start,
                   AtomicQueue<Request> &end,
