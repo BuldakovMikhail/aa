@@ -8,28 +8,31 @@
 
 #include <mutex>
 #include <queue>
+
 template<class T>
-class AtomicQueue
-{
+class AtomicQueue {
 public:
-    void push(const T& value)
-    {
+    void push(const T &value) {
         std::lock_guard<std::mutex> lock(m_mutex);
         m_queque.push(value);
     }
 
-    void pop()
-    {
+    void pop() {
         std::lock_guard<std::mutex> lock(m_mutex);
         m_queque.pop();
     }
-    T front()
-    {
+
+    T front() {
         std::lock_guard<std::mutex> lock(m_mutex);
         return m_queque.front();
     }
-    size_t size()
-    {
+
+    T back() {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        return m_queque.back();
+    }
+
+    size_t size() {
         std::lock_guard<std::mutex> lock(m_mutex);
         return m_queque.size();
     }

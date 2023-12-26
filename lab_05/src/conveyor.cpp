@@ -5,9 +5,12 @@
 #include <queue>
 #include <fstream>
 #include <thread>
+#include <string>
 
 #include <locale>
 #include <codecvt>
+
+#include <iostream>
 
 #include "conveyor.h"
 #include "atomic_queue.h"
@@ -30,8 +33,11 @@ void device1(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::ve
             timespec start, end;
             Request cur_request = from.front();
 
-            if (cur_request.is_last)
+            if (cur_request.is_last) {
                 is_working = false;
+                to.push(cur_request);
+                break;
+            }
 
             from.pop();
 
@@ -57,8 +63,11 @@ void device2(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::ve
             timespec start, end;
             Request cur_request = from.front();
 
-            if (cur_request.is_last)
+            if (cur_request.is_last) {
                 is_working = false;
+                to.push(cur_request);
+                break;
+            }
 
             from.pop();
             start = get_time();
@@ -92,6 +101,52 @@ void print_to_file(const Request &req, const std::string &fname) {
     outfile << std::endl;
 }
 
+double diff_timespec(const timespec &time1, const timespec &time0) {
+    return (time1.tv_sec - time0.tv_sec)
+           + (time1.tv_nsec - time0.tv_nsec) / 1000000000.0;
+}
+
+double getTimeQ(AtomicQueue<Request> &st) {
+    double time = diff_timespec(st.back().time_end_2, st.front().time_start_1);
+    return time;
+}
+
+
+void createReport(AtomicQueue<Request> &requests) {
+    std::cout << "| N | Начало 1 | Конец 1 | Начало 2 | Конец 2 | Начало 3 | Конец 3 |\n";
+    int requestsCount = requests.size();
+    //std::cout<< requestsCount << "\n";
+
+    /*double min_1 = 1e10;
+    double min_2 = 1e10;
+    double min_3 = 1e10;
+
+    double max_1 = -1;
+    double max_2 = -1;
+    double max_3 = -1;
+
+    double mean_1 */
+
+    timespec start = requests.front().time_start_1;
+    for (int i = 0; i < requestsCount; i++) {
+        Request req = requests.front();
+        requests.pop();
+        double started_1 = diff_timespec(req.time_start_1, start);
+        double ended_1 = diff_timespec(req.time_end_1, start);
+
+        double started_2 = diff_timespec(req.time_start_2, start);
+        double ended_2 = diff_timespec(req.time_end_2, start);
+
+        double started_3 = diff_timespec(req.time_start_3, start);
+        double ended_3 = diff_timespec(req.time_end_3, start);
+
+        std::cout << "|" << i << "|" << started_1 << "|" << ended_1 << "|" << started_2 << "|" << ended_2 << "|"
+                  << started_3 << "|" << ended_3 << "|" << std::endl;
+        requests.push(req);
+    }
+    std::cout << "Общее время: " << getTimeQ(requests) << std::endl;
+}
+
 void device3(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::string &fname) {
     bool is_working = true;
 
@@ -100,8 +155,11 @@ void device3(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::st
             timespec start, end;
             Request cur_request = from.front();
 
-            if (cur_request.is_last)
+            if (cur_request.is_last) {
                 is_working = false;
+                to.push(cur_request);
+                break;
+            }
 
             from.pop();
             start = get_time();
@@ -115,7 +173,38 @@ void device3(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::st
 }
 
 void generator(AtomicQueue<Request> &q, size_t count, const std::vector<std::wstring> &words) {
-    ;;;;
+    for (size_t i = 0; i < count; ++i) {
+        std::wstring word = words[std::rand() % words.size()];
+
+        if (word.size() == 1)
+            return;
+
+        int errors = word.size() * 0.1 + 1;
+
+        for (int j = 0; j < errors; ++j) {
+            double p = std::rand() / RAND_MAX;
+            if (p < 0.33) {
+                int cpos = std::rand() % word.size();
+                wchar_t c = word[cpos];
+                if (c == L'а')
+                    c += 1;
+                else
+                    c -= 1;
+
+                word[cpos] = c;
+            } else if (p < 0.66) {
+                int pos = std::rand() % word.size();
+                word.insert(word.begin() + pos, word[pos]);
+            } else {
+                int pos = std::rand() % (word.size() - 1);
+                auto temp = word[pos];
+                word[pos] = word[pos + 1];
+                word[pos + 1] = temp;
+            }
+        }
+        q.push({word, i});
+    }
+    q.push({});
 }
 
 

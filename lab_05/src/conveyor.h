@@ -30,15 +30,28 @@ struct Request {
     std::vector<std::wstring> res;
 
     Request() : id(0),
-                is_last(0),
+                is_last(1),
                 max_errors(0),
                 k(0),
                 is_correct(0) {};
+
+    Request(std::wstring &word_, int id_) : id(id_),
+                                            word(word_),
+                                            is_last(0),
+                                            max_errors(5),
+                                            k(3),
+                                            is_correct(0) {};
+
 };
+
+
+void generator(AtomicQueue<Request> &q, size_t count, const std::vector<std::wstring> &words);
 
 void run_pipeline(AtomicQueue<Request> &start,
                   AtomicQueue<Request> &end,
                   const std::string &fname_in,
                   const std::string &fname_out);
+
+void createReport(AtomicQueue<Request> &requests);
 
 #endif //SRC_CONVEYOR_H
