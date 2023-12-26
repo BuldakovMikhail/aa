@@ -107,7 +107,7 @@ double diff_timespec(const timespec &time1, const timespec &time0) {
 }
 
 double getTimeQ(AtomicQueue<Request> &st) {
-    double time = diff_timespec(st.back().time_end_2, st.front().time_start_1);
+    double time = diff_timespec(st.back().time_end_3, st.front().time_start_1);
     return time;
 }
 
@@ -125,7 +125,10 @@ void createReport(AtomicQueue<Request> &requests) {
     double max_2 = -1;
     double max_3 = -1;
 
-    double mean_1 */
+    double mean_1 = 0;
+    double mean_2 = 0;
+    double mean_3 = 0;*/
+
 
     timespec start = requests.front().time_start_1;
     for (int i = 0; i < requestsCount; i++) {
@@ -157,7 +160,6 @@ void device3(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::st
 
             if (cur_request.is_last) {
                 is_working = false;
-                to.push(cur_request);
                 break;
             }
 
@@ -220,8 +222,79 @@ void run_pipeline(AtomicQueue<Request> &start,
 
     std::thread t1(device1, std::ref(start), std::ref(secondQ), std::ref(words));
     std::thread t2(device2, std::ref(secondQ), std::ref(thirdQ), std::ref(words));
+    std::thread t22(device2, std::ref(secondQ), std::ref(thirdQ), std::ref(words));
     std::thread t3(device3, std::ref(thirdQ), std::ref(end), fname_out);
     t1.join();
     t2.join();
+    t22.join();
     t3.join();
+}
+
+void device1_lin(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::vector<std::wstring> &words) {
+
+    while (from.size() > 0) {
+        timespec start, end;
+        Request cur_request = from.front();
+
+        from.pop();
+
+        start = get_time();
+        if (is_word_in_vec(words, cur_request.word))
+            cur_request.is_correct = true;
+        end = get_time();
+
+        cur_request.time_start_1 = start;
+        cur_request.time_end_1 = end;
+        to.push(cur_request);
+    }
+}
+
+
+void device2_lin(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::vector<std::wstring> &words) {
+    while (from.size() > 0) {
+        timespec start, end;
+        Request cur_request = from.front();
+        from.pop();
+        start = get_time();
+        if (!cur_request.is_correct)
+            cur_request.res = get_closest_words(words,
+                                                cur_request.word,
+                                                cur_request.k,
+                                                cur_request.max_errors);
+        end = get_time();
+        cur_request.time_start_2 = start;
+        cur_request.time_end_2 = end;
+        to.push(cur_request);
+    }
+}
+
+
+void device3_lin(AtomicQueue<Request> &from, AtomicQueue<Request> &to, const std::string &fname) {
+    while (from.size() > 0) {
+        timespec start, end;
+        Request cur_request = from.front();
+        from.pop();
+        start = get_time();
+        print_to_file(cur_request, fname);
+        end = get_time();
+        cur_request.time_start_3 = start;
+        cur_request.time_end_3 = end;
+        to.push(cur_request);
+    }
+}
+
+
+void run_pipeline_lin(AtomicQueue<Request> &start,
+                      AtomicQueue<Request> &end,
+                      const std::string &fname_in,
+                      const std::string &fname_out) {
+
+    auto words = read_words_from_file(fname_in);
+
+    AtomicQueue<Request> secondQ;
+    AtomicQueue<Request> thirdQ;
+
+    device1_lin(start, secondQ, words);
+    device2_lin(secondQ, thirdQ, words);
+    device3_lin(thirdQ, end, fname_out);
 }

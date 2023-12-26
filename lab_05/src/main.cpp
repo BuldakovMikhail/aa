@@ -6,6 +6,7 @@
 #include "atomic_queue.h"
 #include "utils.h"
 
+#include "measure_time.h"
 
 void show_menu() {
     std::cout <<
@@ -21,14 +22,14 @@ void show_menu() {
 int main() {
     setlocale(LC_ALL, "");
 
-    AtomicQueue<Request> start;
-    AtomicQueue<Request> end;
-
     int opt;
     std::vector<std::wstring> words = read_words_from_file("../russian_words.txt");
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
     while (true) {
+        AtomicQueue<Request> start;
+        AtomicQueue<Request> end;
+
         show_menu();
         std::cin >> opt;
 
@@ -41,8 +42,9 @@ int main() {
 
             generator(start, size, words);
             run_pipeline(start, end, "../russian_words.txt", "../res.log");
+            int len = end.size();
 
-            for (int i = 0; i < end.size(); ++i) {
+            for (int i = 0; i < len; ++i) {
                 auto req = end.front();
                 end.pop();
                 std::string narrow = converter.to_bytes(req.word);
@@ -57,6 +59,7 @@ int main() {
             }
 
         } else if (opt == 2) {
+            getTimeResults(10, 80, 10, words);
 
         } else if (opt == 3) {
             int size = 0;

@@ -54,4 +54,11 @@ void run_pipeline(AtomicQueue<Request> &start,
 
 void createReport(AtomicQueue<Request> &requests);
 
+void run_pipeline_lin(AtomicQueue<Request> &start,
+                      AtomicQueue<Request> &end,
+                      const std::string &fname_in,
+                      const std::string &fname_out);
+
+double getTimeQ(AtomicQueue<Request> &st);
+
 #endif //SRC_CONVEYOR_H
