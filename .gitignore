@@ -11,3 +11,4 @@
 *.bcf
 .idea
 cmake-build-debug
+tex.txt
