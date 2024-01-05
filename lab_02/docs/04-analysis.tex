@@ -1,0 +1,135 @@
+\chapter{Аналитический раздел}
+
+Матрицей называется прямоугольная таблица чисел, вида \eqref{eq:matrix}, состоящая из $m$ строк и $n$ столбцов \cite{matrix}.
+
+\begin{equation}
+	\label{eq:matrix}
+	\begin{pmatrix}
+		a_{11} & a_{12} & \ldots & a_{1n}\\
+		a_{21} & a_{22} & \ldots & a_{2n}\\
+		\vdots & \vdots & \ddots & \vdots\\
+		a_{m1} & a_{m2} & \ldots & a_{mn}
+	\end{pmatrix},
+\end{equation}
+
+Пусть $A$ --- матрица, тогда $а_{ij}$ --- элемент этой матрицы, который находится на \textit{i-ой} строке и \textit{j-ом} столбце.
+
+Если количество столбцов первой матрицы совпадает с количеством строк второй матрицы, то возможно выполнить их матричное умножение.
+В результате умножения получится матрица-произведение, количество строк в которой равно количеству строк первой матрицы, а количество столбцов равно количеству столбцов второй матрицы.
+
+\section{Классический алгоритм}
+
+Пусть даны две прямоугольные матрицы $A$ и $B$ размеров $[m \times n]$ и $[n \times k]$ соответственно. В результате произведение матриц $A$ и $B$ получим матрицу $C$ размера $[m \times k]$, элементы которой вычисляются по \eqref{eq:matrix_classic}.
+
+\begin{equation}
+	\label{eq:matrix_classic}
+	c_{ij} = \sum_{l=1}^{n}a_{il}b_{lj}
+\end{equation}
+
+Классический алгоритм умножения матриц, реализует формулу \eqref{eq:matrix_classic}.
+
+\section{Алгоритм Винограда}
+
+Произведение матриц $A$ и $B$ можно связать со скалярным  произведением строки матрицы $A$ на столбец матрицы $B$ \cite{book_vinograd}.
+
+Рассмотрим два вектора $V = (v1, v2, v3, v4)$ и $W = (w1, w2, w3, w4)$.  
+
+Их скалярное произведение равно (\ref{formula}).
+
+\begin{equation} \label{formula}
+	V \cdot W=v_1 \cdot w_1 + v_2 \cdot w_2 + v_3 \cdot w_3 + v_4 \cdot w_4
+\end{equation}
+
+Равенство (\ref{formula}) можно переписать в виде (\ref{formula2}) 
+\begin{equation} \label{formula2}
+	V \cdot W=(v_1 + w_2) \cdot (v_2 + w_1) + (v_3 + w_4) \cdot (v_4 + w_3) - v_1 \cdot v_2 - v_3 \cdot v_4 - w_1 \cdot w_2 - w_3 \cdot w_4
+\end{equation}
+
+Теперь допустим, что у нас есть две матрицы $A$ и $B$ размерности $m \times n$ и $n \times p$ соответственно, и мы хотим найти их произведение $C = A \cdot B$.
+Тогда алгоритм будет состоять из следующих шагов.
+
+\begin{enumerate}
+	\item Подготовительные вычисления. Сначала создаются два вспомогательных массива \eqref{eq:rf} и \eqref{eq:cf}.
+	\begin{equation}
+	\label{eq:rf}
+	\text{{rowFactor}}[i] = \sum_{j=0}^{n/2 - 1} A[i][2j+1] \cdot A[i][2j]
+	\end{equation}
+	для \(0 \leq i < m\)
+	\begin{equation}
+	\label{eq:cf}
+	\text{{colFactor}}[j] = \sum_{i=0}^{n/2 - 1} B[2i+1][j] \cdot B[2i][j]
+	\end{equation}
+	для \(0 \leq j < p\).
+	
+	\item Умножение матриц. Вычисляем результирующую матрицу $C$ по формуле~\eqref{eq:c_res}.
+	\begin{equation}
+		\label{eq:c_res}
+		\begin{aligned}
+			C[i][j] &= \sum_{k=0}^{n/2 - 1} (A[i][2k+1] + B[2k][j]) \cdot (A[i][2k] + B[2k+1][j]) \\
+			&\quad - \text{{rowFactor}}[i] - \text{{colFactor}}[j]
+		\end{aligned}
+	\end{equation}
+	для \(0 \leq i < m\) и \(0 \leq j < p\).
+	
+	\item Коррекция. Если \(n\) нечетно, добавляем коррекцию, в соответствии с формулой \eqref{eq:er}.
+	\begin{equation}
+		\label{eq:er}
+	C[i][j] += A[i][n] \cdot B[n][j]
+	\end{equation}
+	для \(0 \leq i < m\) и \(0 \leq j < p\). 
+\end{enumerate}
+
+\section{Алгоритм Штрассена}
+
+Алгоритм Штрассена --- это алгоритм умножения квадратных матриц, который является более эффективным для больших матриц, чем классический метод умножения \cite{strassen}.
+
+Если добавить к матрицам $A$ и $B$ одинаковые нулевые строки и столбцы, их произведение станет равно матрице $C$ с теми же добавленными строками и столбцами. 
+Поэтому в данном алгоритме рассматриваются матрицы порядка $2^{k + 1}$, где $ k \in \mathbb{N} $, а все остальные матрицы, сводятся к этому размеру добавлением нулевых строк и столбцов. 
+
+Алгоритм состоит из следующих шагов.
+
+\begin{enumerate}
+	\item Разбиение матриц \eqref{eq:mat_split}.
+	\begin{equation}
+		\label{eq:mat_split}
+	A = \begin{bmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{bmatrix}, \quad
+	B = \begin{bmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{bmatrix}
+	,
+	\end{equation} где $A_{ij}$ и $B_{ij}$ -- матрицы порядка $2^{k}$
+	
+	\item Вычисление вспомогательных матриц \eqref{eq:help_mat}.
+	\begin{equation}
+		\label{eq:help_mat}
+	\begin{aligned}
+		M_1 &= (A_{11} + A_{22})(B_{11} + B_{22}) \\
+		M_2 &= (A_{21} + A_{22})B_{11} \\
+		M_3 &= A_{11}(B_{12} - B_{22}) \\
+		M_4 &= A_{22}(B_{21} - B_{11}) \\
+		M_5 &= (A_{11} + A_{12})B_{22} \\
+		M_6 &= (A_{21} - A_{11})(B_{11} + B_{12}) \\
+		M_7 &= (A_{12} - A_{22})(B_{21} + B_{22})
+	\end{aligned}
+	\end{equation}
+	
+	\item Вычисление результирующих подматриц \eqref{eq:res_submat}.
+	\begin{equation}
+		\label{eq:res_submat}
+	\begin{aligned}
+		C_{11} &= M_1 + M_4 - M_5 + M_7 \\
+		C_{12} &= M_3 + M_5 \\
+		C_{21} &= M_2 + M_4 \\
+		C_{22} &= M_1 - M_2 + M_3 + M_6
+	\end{aligned}
+	\end{equation}
+		
+	Результирующая матрица состоит из $C_{ij}$~\eqref{eq:res_mat_str}.
+	\begin{equation}
+		\label{eq:res_mat_str}
+		AB = C = \begin{bmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{bmatrix}
+	\end{equation}
+		
+\end{enumerate}
+
+
+\section*{Вывод}
+В данном разделе были описаны алгоритмы классического умножения матриц, алгоритм Штрассена и алгоритм Винограда.
